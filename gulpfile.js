@@ -5,15 +5,20 @@ const gulp = require('gulp'),
   cssVars = require('postcss-simple-vars'),
   nested = require('postcss-nested'),
   cssImport = require('postcss-import'),
-  browserSync = require('browser-sync').create();
+  browserSync = require('browser-sync').create(),
+  plumber = require('gulp-plumber'),
+  mixins = require('postcss-mixins');
 
+// gulp style
 gulp.task('styles', () => {
   return gulp.src('./app/assets/styles/styles.css')
-    .pipe(postcss([cssImport, cssVars, nested, autoPrefixer]))
+    .pipe(postcss([cssImport, mixins, cssVars, nested, autoPrefixer]))
+    .pipe(plumber())
     .pipe(gulp.dest('./app/temp/styles'))
     .pipe(browserSync.stream());
 });
 
+// gulp watch
 gulp.task('watch', () => {
   browserSync.init({
     notify: false,
