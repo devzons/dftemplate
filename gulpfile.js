@@ -4,23 +4,22 @@ const gulp = require('gulp'),
   autoPrefixer = require('autoprefixer'),
   cssVars = require('postcss-simple-vars'),
   nested = require('postcss-nested'),
-  cssImport = require('postcss-import');
-
-gulp.task('default', () => {
-  console.log("Create gulp task");
-});
-
-gulp.task('html', () => {
-  console.log("html is running");
-});
+  cssImport = require('postcss-import'),
+  browserSync = require('browser-sync').create();
 
 gulp.task('styles', () => {
   return gulp.src('./app/assets/styles/styles.css')
     .pipe(postcss([cssImport, cssVars, nested, autoPrefixer]))
-    .pipe(gulp.dest('./app/temp/styles'));
+    .pipe(gulp.dest('./app/temp/styles'))
+    .pipe(browserSync.stream());
 });
 
 gulp.task('watch', () => {
-  gulp.watch('./app/index.html').on('change', gulp.series('html'));
+  browserSync.init({
+    notify: false,
+    server: "app"
+  });
+
+  gulp.watch('./app/index.html').on('change', browserSync.reload);
   gulp.watch('./app/assets/styles/**/*.css').on('change', gulp.series('styles'));
 });
