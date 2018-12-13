@@ -25,3 +25,8 @@ git checkout master
 git merge testimonials --no-ff
 git push origin master
 ```
+
+## Vector Sprite - Icon Sprite
+```
+gulp icons
+```
